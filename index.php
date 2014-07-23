@@ -170,9 +170,10 @@ else if ($function == "log") { //writes a log message
 			 
 	$log = json_decode($body);
 	
-	$fp = fopen('logs/request.log', 'a');
-	fwrite($fp, $log['logs']);
-	fclose($fp);
+	$file = 'logs/request.log';
+	
+	file_put_contents($file, $log['logs']);
+	
 }
 else if ($function == "list") { //return a list of subscribers
 	$auth = $_REQUEST["auth"];
