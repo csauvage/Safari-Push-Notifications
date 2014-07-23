@@ -154,7 +154,7 @@ else if ($function == "log") { //writes a log message
 	
 	/* Configuring a error JSON output */
 	
-	$errorOutput = array('type' => 'error'
+	$errorOutput = array('type' => 'error',
 						 'logs' => '$_R[\'body\'] doesn\'t exist or is empty');
 						 
 	$errorOutputJSON = json_encode($errorOutput);
