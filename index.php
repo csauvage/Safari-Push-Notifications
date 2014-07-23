@@ -76,6 +76,8 @@ else if ($function == "devices") { // safari is adding or deleting the device
 else if ($function == "verifyCode") { //verify a token
 	$token = filter_var($path[2], FILTER_SANITIZE_STRING);
 	$r = mysqli_do("SELECT * FROM push WHERE token='$token'");
+	
+	
 	if(mysqli_num_rows($r) > 0) {
 		echo("valid");
 	}
@@ -149,9 +151,25 @@ else if ($function == "push") { //pushes a notification
 	}
 }
 else if ($function == "log") { //writes a log message
-	$title = $_REQUEST["title"];
-	$body = $_REQUEST["body"];
+	
+	/* Configuring a error JSON output */
+	
+	$errorOutput = array('type' => 'error'
+						 'logs' => '$_R[\'body\'] doesn\'t exist or is empty');
+						 
+	$errorOutputJSON = json_encode($errorOutput);
+	
+	
+	/* END OF -- Configuring a error JSON output */
+	
+	
+	$title = (isset($_REQUEST["title"]) && !empty($_REQUEST["title"])) ? $_REQUEST["title"] : '$_REQUEST[\'title\'] doesn\'t exist or is empty';
+	
+	$body = (isset($_REQUEST["body"]) && !empty($_REQUEST["body"])) ? $_REQUEST["body"] : $errorOutputJSON;
+	
+			 
 	$log = json_decode($body);
+	
 	$fp = fopen('logs/request.log', 'a');
 	fwrite($fp, $log['logs']);
 	fclose($fp);
